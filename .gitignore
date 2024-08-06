@@ -1,0 +1,88 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django stuff:
+*.log
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Static files
+/staticfiles/
+/static/
+
+# Local development environment
+local_settings.py
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.xml
+*.cover
+*.py,cover
+.cache
+nosetests.xml
+coverage/
+.cache/
+nosetests.xml
+*.cover
+*.pyc
+.pytest_cache/
+
+# Environments
+*.env
+
+# macOS
+.DS_Store
+
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+
+# Python virtual environment
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE settings
+*.swp
+*~
+
+# MySQL dumps
+*.sql
+
+# Security
+secrets.json
+
+# Sentry configuration files
+.sentryclirc
+
+# Generated files
+*.pyo
+*.pyd
+
+# Cache
+.pytest_cache/
+*.tmp
+*.bak
+
+# Ignore the entire .venv directory to keep local virtual environments
+.venv/
+
+# Ignore specific Inte
