@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Car List</h1>
+  <ul>
+    {% for car in cars %}
+      <li>
+        <a href="{% url 'car_detail' car.pk %}">{{ car.model.name }} - {{ car.year }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+  {% if user.is_staff %}
+    <a href="{% url 'car_create' %}">Add New Car</a>
+  {% endif %}
+{% endblock %}

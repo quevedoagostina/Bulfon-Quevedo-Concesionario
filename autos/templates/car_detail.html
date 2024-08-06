@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ car.model.name }} - {{ car.year }}</h1>
+  <img src="{{ car.image.url }}" alt="{{ car.model.name }}">
+  <p>{{ car.description }}</p>
+  <p>Price: ${{ car.price }}</p>
+
+  <h2>Comments</h2>
+  <ul>
+    {% for comment in car.comment_set.all %}
+      <li>
+        <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+        {% if user.is_authenticated %}
+          {% if user == comment.user or user.is_staff %}
+            <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
+          {% endif %}
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+
+  {% if user.is_authenticated %}
+    <form method="post" action="{% url 'add_comment' car.pk %}">
+      {% csrf_token %}
+      <textarea name="content" placeholder="Add a comment..."></textarea>
+      <button type="submit">Post Comment</button>
+    </form>
+  {% else %}
+    <p>Please <a href="{% url 'login' %}">login</a> to post comments.</p>
+  {% endif %}
+{% endblock %}
