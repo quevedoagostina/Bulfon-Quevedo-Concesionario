@@ -1,0 +1,56 @@
+<!-- autos/templates/customer_profile.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil del Cliente</title>
+</head>
+<body>
+    <header>
+        <h1>Perfil de {{ customer_profile.user.username }}</h1>
+    </header>
+
+    <section>
+        <h2>Información Personal</h2>
+        <p><strong>Nombre:</strong> {{ customer_profile.user.first_name }} {{ customer_profile.user.last_name }}</p>
+        <p><strong>Email:</strong> {{ customer_profile.user.email }}</p>
+        <p><strong>Dirección:</strong> {{ customer_profile.address }}</p>
+        <p><strong>Teléfono:</strong> {{ customer_profile.phone }}</p>
+    </section>
+
+    <section>
+        <h2>Favoritos</h2>
+        <ul>
+            {% for favorite in customer_profile.user.favorite_set.all %}
+                <li>{{ favorite.car.model }} - {{ favorite.car.year }}</li>
+            {% empty %}
+                <li>No tienes autos favoritos.</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <h2>Comentarios</h2>
+        <ul>
+            {% for comment in customer_profile.user.comment_set.all %}
+                <li>{{ comment.content }} en {{ comment.car.model }} - {{ comment.car.year }}</li>
+            {% empty %}
+                <li>No has dejado comentarios.</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+        <h2>Reseñas</h2>
+        <ul>
+            {% for review in customer_profile.user.review_set.all %}
+                <li><strong>{{ review.title }}</strong>: {{ review.content }} ({{ review.rating }}/5)</li>
+            {% empty %}
+                <li>No has dejado reseñas.</li>
+            {% endfor %}
+        </ul>
+    </section>
+</body>
+</html>
