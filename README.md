@@ -28,8 +28,8 @@ Sigue estos pasos para configurar el proyecto en tu entorno local:
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/quevedoagostina/concesionarioauto.git
-cd concesionarioauto
+git clone https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario
+cd Bulfon-Quevedo-Concesionario
 ```
 
 ### 2. Crea un entorno virtual
@@ -55,7 +55,11 @@ python3 -m venv env
 ### 4. Instala las dependencias
 
 ```bash
-pip install -r requirements.txt
+pip install django
+```
+
+```bash
+pip -m pip install Pillow
 ```
 
 ### 5. Configura la base de datos
