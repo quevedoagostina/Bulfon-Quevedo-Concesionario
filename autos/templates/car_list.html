@@ -1,15 +1,22 @@
 {% extends "base.html" %}
 
+{% block title %}
+    Available Cars
+{% endblock %}
+
 {% block content %}
-  <h1>Car List</h1>
-  <ul>
-    {% for car in cars %}
-      <li>
-        <a href="{% url 'car_detail' car.pk %}">{{ car.model.name }} - {{ car.year }}</a>
-      </li>
-    {% endfor %}
-  </ul>
-  {% if user.is_staff %}
-    <a href="{% url 'car_create' %}">Add New Car</a>
-  {% endif %}
+<div class="car-list">
+    <h1>Available Cars</h1>
+    <div class="car-container">
+        {% for car in object_list %}
+            <div class="car-item">
+                <img src="{{ car.image.url }}" alt="{{ car.model.name }}" class="car-image">
+                <h2>{{ car.model.name }} - {{ car.year }}</h2>
+                <p>{{ car.description }}</p>
+                <p><strong>Price: ${{ car.price }}</strong></p>
+                <a href="{% url 'car_detail' car.pk %}">View Details</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

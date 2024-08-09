@@ -1,32 +1,58 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ car.model.name }} - {{ car.year }}{% endblock %}
 
 {% block content %}
-  <h1>{{ car.model.name }} - {{ car.year }}</h1>
-  <img src="{{ car.image.url }}" alt="{{ car.model.name }}">
-  <p>{{ car.description }}</p>
-  <p>Price: ${{ car.price }}</p>
+<div class="car-detail-container">
+    <h1>{{ car.model.name }} - {{ car.year }}</h1>
+    <img src="{% static 'media/vehiculos/' %}{{ car.image }}" alt="{{ car.model.name }}">
+    <p>{{ car.description }}</p>
+    <p class="price">Price: ${{ car.price }}</p>
 
-  <h2>Comments</h2>
-  <ul>
-    {% for comment in car.comment_set.all %}
-      <li>
-        <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
-        {% if user.is_authenticated %}
-          {% if user == comment.user or user.is_staff %}
-            <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
-          {% endif %}
-        {% endif %}
-      </li>
-    {% endfor %}
-  </ul>
+    <h2>Comments</h2>
+    <ul>
+        {% for comment in car.comment_set.all %}
+        <li>
+            <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+            {% if user.is_authenticated %}
+                {% if user == comment.user or user.is_staff %}
+                    <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
+                {% endif %}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
 
-  {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
     <form method="post" action="{% url 'add_comment' car.pk %}">
-      {% csrf_token %}
-      <textarea name="content" placeholder="Add a comment..."></textarea>
-      <button type="submit">Post Comment</button>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post Comment</button>
     </form>
-  {% else %}
+    {% else %}
     <p>Please <a href="{% url 'login' %}">login</a> to post comments.</p>
-  {% endif %}
+    {% endif %}
+
+    <h2>Reviews</h2>
+    <ul>
+        {% for review in car.review_set.all %}
+        <li>
+            <strong>{{ review.title }}</strong> - {{ review.rating }} stars
+            <p>{{ review.content }}</p>
+            <p><em>by {{ review.user.username }}</em></p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'review_create' car.pk %}">
+        {% csrf_token %}
+        {{ review_form.as_p }}
+        <button type="submit">Submit Review</button>
+    </form>
+    {% else %}
+    <p>Please <a href="{% url 'login' %}">login</a> to submit a review.</p>
+    {% endif %}
+</div>
 {% endblock %}

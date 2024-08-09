@@ -1,11 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Dealership</title>
-    {% load static %}  <!-- Load static files -->
+    <title>{% block title %}Car Dealership{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
@@ -17,19 +16,13 @@
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'register' %}">Sign Up</a></li>
                 {% endif %}
             </ul>
         </nav>
     </header>
 
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+    {% block content %}
+    {% endblock %}
 
-    <footer>
-        <p>&copy; 2024 Car Dealership</p>
-    </footer>
 </body>
 </html>
