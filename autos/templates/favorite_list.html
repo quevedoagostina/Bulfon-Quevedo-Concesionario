@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}My Favorites{% endblock %}
+
+{% block content %}
+<h1>My Favorite Cars</h1>
+<ul>
+    {% for favorite in favorites %}
+    <li>
+        <a href="{% url 'car_detail' favorite.car.pk %}">{{ favorite.car.model.name }} - {{ favorite.car.year }}</a>
+        <p>{{ favorite.car.price }} USD</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
