@@ -6,6 +6,11 @@ from django.contrib.auth.models import User  # Importa el modelo User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Car, Comment, Review, Favorite
 from .forms import CarForm, CommentForm, ReviewForm, CustomRegistrationForm
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+
 
 # Car views
 class CarListView(ListView):
@@ -32,6 +37,13 @@ class CarDeleteView(LoginRequiredMixin, DeleteView):
     model = Car
     template_name = 'car_confirm_delete.html'
     success_url = reverse_lazy('car_list')
+
+class CustomRegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
 
 # Comment views
 def add_comment(request, pk):
@@ -102,3 +114,14 @@ def register_view(request):
     else:
         form = CustomRegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+def custom_login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'registration/login.html', {'error': 'Invalid username or password'})

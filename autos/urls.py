@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import (
     CarListView, CarDetailView, CarCreateView, CarUpdateView, CarDeleteView,
     add_comment, CommentDeleteView, ReviewListView, ReviewCreateView, 
@@ -7,6 +7,7 @@ from .views import (
 )
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import CustomLoginForm
+from autos import views as autos_views
 
 
 
@@ -39,5 +40,6 @@ urlpatterns = [
     # Authentication URLs
     path('login/', LoginView.as_view(template_name='registration/login.html', authentication_form=CustomLoginForm), name='login'),
     path('logout/', LogoutView.as_view(template_name='registration/logged_out.html'), name='logout'),
-    path('register/', register_view, name='register'),
+    path('register/', autos_views.register_view, name='register'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

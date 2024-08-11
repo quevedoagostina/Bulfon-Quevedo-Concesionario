@@ -6,6 +6,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.CarListView.as_view(), name='car_list'),
     path('car/<int:pk>/', views.CarDetailView.as_view(), name='car_detail'),
+    path('register/', views.register_view, name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 
