@@ -1,12 +1,13 @@
 # Bulfon-Quevedo-Concesionario
 
-ConcesionarioAuto es una aplicación desarrollada con Django para gestionar una concesionaria de automóviles. Permite a los usuarios ver una lista de automóviles, detalles de cada auto, realizar comentarios y más. Los administradores del sitio pueden añadir, editar y eliminar vehículos y comentarios.
+ConcesionarioAuto es una app desarrollada con Django para gestionar una concesionaria de automóviles. Permite a los usuarios ver una lista de automóviles, detalles de cada auto, realizar comentarios, dejar reseñas y más. Los administradores del sitio pueden añadir, editar y eliminar vehículos y comentarios.
 
 ## Características
 
 - **Lista de Automóviles**: Visualiza todos los automóviles disponibles en la concesionaria.
 - **Detalles del Automóvil**: Ver información detallada sobre cada auto, incluyendo marca, modelo, precio y año.
 - **Comentarios**: Los usuarios pueden dejar comentarios sobre los automóviles.
+- **Reseñas**: Los usuarios pueden dejar reseñas y calificaciones de los automóviles.
 - **Autenticación**: Sistema de registro e inicio de sesión para usuarios.
 - **Roles de Usuario**: Diferenciación entre usuarios normales y usuarios con rol de administrador (staff).
 - **Gestión de Automóviles**: Los administradores pueden agregar, editar y eliminar automóviles y comentarios.
@@ -55,11 +56,7 @@ python3 -m venv env
 ### 4. Instala las dependencias
 
 ```bash
-pip install django
-```
-
-```bash
-pip -m pip install Pillow
+pip install -r requirements.txt
 ```
 
 ### 5. Configura la base de datos
@@ -70,12 +67,12 @@ Aplica las migraciones para crear la base de datos SQLite:
 python manage.py migrate
 ```
 
-### 6. Carga datos de prueba (opcional)S
+### 6. Ejecuta el script para crear datos de prueba
 
-Si deseas comenzar con datos de prueba, puedes usar fixtures o scripts para cargar datos:
+Si deseas comenzar con datos de prueba, puedes ejecutar el siguiente script que creará los automóviles en la base de datos:
 
 ```bash
-python manage.py loaddata datos_de_prueba.json
+python manage.py shell < autos/script_crear_autos.py
 ```
 
 ### 7. Inicia el servidor de desarrollo
@@ -97,7 +94,7 @@ Visita `http://127.0.0.1:8000/` en tu navegador para acceder a la aplicación.
 
 1. Regístrate o inicia sesión a través de la interfaz de usuario.
 2. Navega por la lista de automóviles.
-3. Comenta en los automóviles de tu elección.
+3. Comenta y deja reseñas en los automóviles de tu elección.
 
 ## Estructura del Proyecto
 
