@@ -5,15 +5,15 @@ ConcesionarioAuto es una app desarrollada con Django para gestionar una concesio
 ## Características
 
 - **Lista de Automóviles**: Visualiza todos los automóviles disponibles en la concesionaria.
-![List](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/main/images/img1.jpeg)
+![List](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img1.jpeg)
 - **Detalles del Automóvil**: Ver información detallada sobre cada auto, incluyendo marca, modelo, precio y año.
-![Car_Detail](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/main/images/img2.jpeg)
+![Car_Detail](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img2.jpeg)
 - **Comentarios**: Los usuarios pueden dejar comentarios sobre los automóviles.
 - **Reseñas**: Los usuarios pueden dejar reseñas y calificaciones de los automóviles.
 - **Autenticación**: Sistema de registro e inicio de sesión para usuarios.
-![Login](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/main/images/img3.jpeg)
+![Login](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img3.jpeg)
 - **Roles de Usuario**: Diferenciación entre usuarios normales y usuarios con rol de administrador (staff).
-![Register](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/main/images/img4.jpeg)
+![Register](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img4.jpeg)
 - **Gestión de Automóviles**: Los administradores pueden agregar, editar y eliminar automóviles y comentarios.
 - **Carga de Imágenes**: Soporte para la carga de imágenes de los automóviles.
 
