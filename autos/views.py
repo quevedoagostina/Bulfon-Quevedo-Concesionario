@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -67,16 +67,26 @@ def add_comment(request, pk):
         form = CommentForm()
     return render(request, 'add_comment.html', {'form': form})
 
+
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'comment_confirm_delete.html'
-    success_url = reverse_lazy('car_list')
+
+    def get_success_url(self):
+        comment = self.get_object()
+        return reverse_lazy('car_detail', kwargs={'pk': comment.car.pk})
 
     def get_object(self, queryset=None):
         comment = super().get_object(queryset)
         if not comment.user == self.request.user and not self.request.user.is_staff:
             return HttpResponseForbidden()
         return comment
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment'] = self.get_object()
+        return context
+
 
 # Review views
 class ReviewListView(ListView):
