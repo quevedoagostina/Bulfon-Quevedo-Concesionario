@@ -86,16 +86,16 @@ class CustomerProfile(models.Model):
         return f"Profile of {self.user.username}"
 
 class Review(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)  # Link to the car being reviewed
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # The user who wrote the review
-    title = models.CharField(max_length=255)  # Title of the review
-    content = models.TextField()  # Detailed review content
-    rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])  # Rating out of 5
-    created_at = models.DateTimeField(auto_now_add=True)  # Timestamp when the review was created
-    updated_at = models.DateTimeField(auto_now=True)  # Timestamp when the review was last updated
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)  
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  
+    title = models.CharField(max_length=255) 
+    content = models.TextField()  
+    rating = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)]) 
+    created_at = models.DateTimeField(auto_now_add=True)  
+    updated_at = models.DateTimeField(auto_now=True) 
 
     def __str__(self):
         return f"Review by {self.user.username} for {self.car} with Rating: {self.rating}"
 
     class Meta:
-        unique_together = ('user', 'car')  # Ensure a user can only review a car once
+        unique_together = ('user', 'car')  

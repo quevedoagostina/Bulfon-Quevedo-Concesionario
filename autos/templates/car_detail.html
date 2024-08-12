@@ -5,54 +5,64 @@
 
 {% block content %}
 <div class="car-detail-container">
-    <h1>{{ car.model.name }} - {{ car.year }}</h1>
-    <img src="{% static 'media/vehiculos/' %}{{ car.image }}" alt="{{ car.model.name }}">
-    <p>{{ car.description }}</p>
-    <p class="price">Price: ${{ car.price }}</p>
+    <div class="car-header">
+        <h1>{{ car.model.name }} - {{ car.year }}</h1>
+        <img src="{{ car.image.url }}" alt="{{ car.model.name }}" class="car-detail-image">
+    </div>
+    <div class="car-description">
+        <p>{{ car.description }}</p>
+        <p class="price">Price: ${{ car.price }}</p>
+    </div>
 
-    <h2>Comments</h2>
-    <ul>
-        {% for comment in car.comment_set.all %}
-        <li>
-            <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
-            {% if user.is_authenticated %}
-                {% if user == comment.user or user.is_staff %}
-                    <a href="{% url 'comment_delete' comment.pk %}">Delete</a>
+    <div class="comments-section">
+        <h2>Comments</h2>
+        <ul class="comments-list">
+            {% for comment in car.comment_set.all %}
+            <li class="comment-item">
+                <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+                {% if user.is_authenticated %}
+                    {% if user == comment.user or user.is_staff %}
+                        <a href="{% url 'comment_delete' comment.pk %}" class="delete-comment">Delete</a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
+            </li>
+            {% endfor %}
+        </ul>
 
-    {% if user.is_authenticated %}
-    <form method="post" action="{% url 'add_comment' car.pk %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Post Comment</button>
-    </form>
-    {% else %}
-    <p>Please <a href="{% url 'login' %}">login</a> to post comments.</p>
-    {% endif %}
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'add_comment' car.pk %}" class="comment-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn submit-btn">Post Comment</button>
+        </form>
+        {% else %}
+        <p class="login-prompt">Please <a href="{% url 'login' %}">login</a> to post comments.</p>
+        {% endif %}
+    </div>
 
-    <h2>Reviews</h2>
-    <ul>
-        {% for review in car.review_set.all %}
-        <li>
-            <strong>{{ review.title }}</strong> - {{ review.rating }} stars
-            <p>{{ review.content }}</p>
-            <p><em>by {{ review.user.username }}</em></p>
-        </li>
-        {% endfor %}
-    </ul>
+    <div class="reviews-section">
+        <h2>Reviews</h2>
+        <ul class="reviews-list">
+            {% for review in car.review_set.all %}
+            <li class="review-item">
+                <div class="review-header">
+                    <strong>{{ review.title }}</strong> - {{ review.rating }} stars
+                </div>
+                <p>{{ review.content }}</p>
+                <p class="review-author">by {{ review.user.username }}</p>
+            </li>
+            {% endfor %}
+        </ul>
 
-    {% if user.is_authenticated %}
-    <form method="post" action="{% url 'review_create' car.pk %}">
-        {% csrf_token %}
-        {{ review_form.as_p }}
-        <button type="submit">Submit Review</button>
-    </form>
-    {% else %}
-    <p>Please <a href="{% url 'login' %}">login</a> to submit a review.</p>
-    {% endif %}
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'review_create' car.pk %}" class="review-form">
+            {% csrf_token %}
+            {{ review_form.as_p }}
+            <button type="submit" class="btn submit-btn">Submit Review</button>
+        </form>
+        {% else %}
+        <p class="login-prompt">Please <a href="{% url 'login' %}">login</a> to submit a review.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

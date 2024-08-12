@@ -64,7 +64,7 @@ def populate_cars():
         brand, _ = Brand.objects.get_or_create(name=car['model_make_id'])
         model, _ = CarModel.objects.get_or_create(name=car['model_name'], brand=brand)
 
-        image_path = f"vehiculos/{i+1}.png" 
+        image_path = f"cars/{i+1}.png" 
         
         car_instance = Car.objects.create(
             model=model,

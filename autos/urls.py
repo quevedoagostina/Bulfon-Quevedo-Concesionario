@@ -25,7 +25,7 @@ urlpatterns = [
 
     # Review URLs
     path('car/<int:pk>/reviews/', ReviewListView.as_view(), name='review_list'),
-    path('car/<int:pk>/reviews/new/', ReviewCreateView.as_view(), name='review_create'),
+    path('car/<int:pk>/review/', ReviewCreateView.as_view(), name='review_create'),
 
     # Favorite URLs
     path('favorites/', FavoriteListView.as_view(), name='favorite_list'),

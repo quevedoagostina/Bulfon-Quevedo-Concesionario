@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm 
+from django.contrib.auth.forms import UserCreationForm
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Car, Comment, Review, Favorite
 from .forms import CarForm, CommentForm, ReviewForm, CustomRegistrationForm
 from django import forms
+from django.http import HttpResponseForbidden
 
 # Define el StaffRequiredMixin
 class StaffRequiredMixin(UserPassesTestMixin):
@@ -67,7 +68,6 @@ def add_comment(request, pk):
         form = CommentForm()
     return render(request, 'add_comment.html', {'form': form})
 
-
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'comment_confirm_delete.html'
@@ -87,24 +87,19 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
         context['comment'] = self.get_object()
         return context
 
-
 # Review views
-class ReviewListView(ListView):
-    model = Review
-    template_name = 'review_list.html'
-
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
     template_name = 'review_form.html'
-    
+
     def form_valid(self, form):
-        form.instance.user = self.request.user  
+        form.instance.user = self.request.user
+        form.instance.car = get_object_or_404(Car, pk=self.kwargs['pk'])
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('car_detail', kwargs={'pk': self.object.car.pk}) 
-
+        return reverse('car_detail', kwargs={'pk': self.object.car.pk})
 
 # Favorite views
 class FavoriteListView(LoginRequiredMixin, ListView):
@@ -130,7 +125,7 @@ class LikeToggleView(LoginRequiredMixin, View):
 
 # Customer profile view
 class CustomerProfileDetailView(LoginRequiredMixin, DetailView):
-    model = User  # Usa el modelo User en lugar de CustomUser
+    model = User
     template_name = 'customer_profile.html'
 
 # Registration view
