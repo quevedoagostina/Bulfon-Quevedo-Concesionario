@@ -8,6 +8,12 @@ class CarForm(forms.ModelForm):
         model = Car
         fields = ['model', 'category', 'year', 'price', 'image', 'description']
 
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        if not image:
+            raise forms.ValidationError("La carga de imagen es obligatoria.")
+        return image
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment

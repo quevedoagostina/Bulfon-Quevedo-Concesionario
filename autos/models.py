@@ -26,7 +26,7 @@ class Car(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     year = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='cars/')
+    image = models.ImageField(upload_to='cars/', null=False, blank=False)
     description = models.TextField()
 
     def __str__(self):
