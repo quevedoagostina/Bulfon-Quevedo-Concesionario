@@ -1,16 +1,18 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.contrib.auth import login
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User  # Importa el modelo User
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Car, Comment, Review, Favorite
 from .forms import CarForm, CommentForm, ReviewForm, CustomRegistrationForm
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from django.contrib.auth import login
 
+# Define el StaffRequiredMixin
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
 
 # Car views
 class CarListView(ListView):
@@ -21,19 +23,19 @@ class CarDetailView(DetailView):
     model = Car
     template_name = 'car_detail.html'
 
-class CarCreateView(LoginRequiredMixin, CreateView):
+class CarCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
     model = Car
     form_class = CarForm
     template_name = 'car_form.html'
     success_url = reverse_lazy('car_list')
 
-class CarUpdateView(LoginRequiredMixin, UpdateView):
+class CarUpdateView(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
     model = Car
     form_class = CarForm
     template_name = 'car_form.html'
     success_url = reverse_lazy('car_list')
 
-class CarDeleteView(LoginRequiredMixin, DeleteView):
+class CarDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
     model = Car
     template_name = 'car_confirm_delete.html'
     success_url = reverse_lazy('car_list')
@@ -64,6 +66,12 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
     template_name = 'comment_confirm_delete.html'
     success_url = reverse_lazy('car_list')
+
+    def get_object(self, queryset=None):
+        comment = super().get_object(queryset)
+        if not comment.user == self.request.user and not self.request.user.is_staff:
+            return HttpResponseForbidden()
+        return comment
 
 # Review views
 class ReviewListView(ListView):
@@ -122,6 +130,8 @@ def custom_login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('car_list')
         else:
             return render(request, 'registration/login.html', {'error': 'Invalid username or password'})
+    else:
+        return render(request, 'registration/login.html')
