@@ -6,6 +6,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.CarListView.as_view(), name='car_list'),
     path('car/<int:pk>/', views.CarDetailView.as_view(), name='car_detail'),
+    path('car/<int:pk>/comment/', views.add_comment, name='add_comment'),  
+    path('car/comment/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),  
+    path('car/<int:pk>/review/', views.ReviewCreateView.as_view(), name='review_create'),  # Añade esta línea
     path('register/', views.register_view, name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]
