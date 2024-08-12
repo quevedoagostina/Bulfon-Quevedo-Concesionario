@@ -19,7 +19,12 @@ class CarListView(ListView):
     model = Car
     template_name = 'car_list.html'
 
-class CarDetailView(DetailView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+
+class CarDetailView(LoginRequiredMixin, DetailView):
     model = Car
     template_name = 'car_detail.html'
 
@@ -82,7 +87,14 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     form_class = ReviewForm
     template_name = 'review_form.html'
-    success_url = reverse_lazy('car_list')
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user  
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('car_detail', kwargs={'pk': self.object.car.pk}) 
+
 
 # Favorite views
 class FavoriteListView(LoginRequiredMixin, ListView):

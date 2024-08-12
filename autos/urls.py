@@ -3,7 +3,7 @@ from .views import (
     CarListView, CarDetailView, CarCreateView, CarUpdateView, CarDeleteView,
     add_comment, CommentDeleteView, ReviewListView, ReviewCreateView, 
     FavoriteListView, toggle_favorite, LikeToggleView, CustomerProfileDetailView,
-    register_view
+    register_view, add_comment
 )
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import CustomLoginForm
