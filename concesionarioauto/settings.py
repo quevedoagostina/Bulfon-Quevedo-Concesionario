@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'autos',  # Include the autos app
 ]
 
@@ -78,7 +79,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "es"
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
