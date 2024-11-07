@@ -171,19 +171,3 @@ def custom_login_view(request):
             error = 'Please provide both username and password'
     
     return render(request, 'registration/login.html', {'error': error})
-
-class CarListAPIView(generics.ListAPIView):
-    queryset = Car.objects.all()
-    serializer_class = CarSerializer
-    
-class CarCommentsAPIView(generics.ListAPIView):
-    serializer_class = CommentSerializer
-
-    def get_queryset(self):
-        car_id = self.kwargs['car_id']
-        return Comment.objects.filter(car_id=car_id)
-
-class UserCreateAPIView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsAdminUser]

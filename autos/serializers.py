@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Car, Brand, Comment, User, CarModel
+from .models import Car, Brand, Comment, User, CarModel, Category
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,7 +24,8 @@ class CarModelSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'brand']
 
 class CarSerializer(serializers.ModelSerializer):
-    model = CarModelSerializer()  # Anidamos CarModel dentro de Car para acceder al brand
+    model = serializers.PrimaryKeyRelatedField(queryset=CarModel.objects.all())  # Cambia esto
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())  # Cambia esto
 
     class Meta:
         model = Car
