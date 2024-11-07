@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 # Define the base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,13 +11,15 @@ ALLOWED_HOSTS = []
 
 # Installed apps
 INSTALLED_APPS = [
+    # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'autos',  # Include the autos app
+    'autos',
+    'rest_framework',
 ]
 
 # Middleware configuration
@@ -79,6 +82,16 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('es', _('Spanish')),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale/',
+]
+
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
@@ -92,3 +105,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
 LOGIN_REDIRECT_URL = 'car_list'
+LOGOUT_REDIRECT_URL = 'car_list'  

@@ -1,3 +1,4 @@
+# concesionarioauto/urls.py
 from django.contrib import admin
 from django.urls import path, include
 from autos import views
@@ -8,9 +9,11 @@ urlpatterns = [
     path('car/<int:pk>/', views.CarDetailView.as_view(), name='car_detail'),
     path('car/<int:pk>/comment/', views.add_comment, name='add_comment'),  
     path('car/comment/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),  
-    path('car/<int:pk>/review/', views.ReviewCreateView.as_view(), name='review_create'),  # Añade esta línea
+    path('car/<int:pk>/review/', views.ReviewCreateView.as_view(), name='review_create'),  
     path('register/', views.register_view, name='register'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('login/', views.custom_login_view, name='login'),  
+    path('api/', include('autos.api_urls')), 
 ]
 
 from django.conf import settings

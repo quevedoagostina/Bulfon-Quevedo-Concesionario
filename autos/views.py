@@ -9,6 +9,9 @@ from .models import Car, Comment, Review, Favorite
 from .forms import CarForm, CommentForm, ReviewForm, CustomRegistrationForm
 from django import forms
 from django.http import HttpResponseForbidden
+from rest_framework import generics
+from .serializers import CarSerializer, CommentSerializer, UserSerializer
+from rest_framework.permissions import IsAdminUser
 
 # Define el StaffRequiredMixin
 class StaffRequiredMixin(UserPassesTestMixin):
@@ -130,25 +133,57 @@ class CustomerProfileDetailView(LoginRequiredMixin, DetailView):
 
 # Registration view
 def register_view(request):
+    error = None
     if request.method == 'POST':
         form = CustomRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('car_list')
+            try:
+                user = form.save(commit=False)
+                user.set_password(form.cleaned_data['password1']) 
+                user.save()
+                login(request, user)
+                return redirect('car_list')
+            except Exception as e:
+                error = str(e)  
+        else:
+            error = form.errors.as_text()  
     else:
         form = CustomRegistrationForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form, 'error': error})
 
 def custom_login_view(request):
+    error = None
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('car_list')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        if username and password:
+            print("Attempting to authenticate:", username)  
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                print("Authentication successful")  
+                return redirect('car_list')
+            else:
+                error = 'Invalid username or password'
+                print("Authentication failed")  
         else:
-            return render(request, 'registration/login.html', {'error': 'Invalid username or password'})
-    else:
-        return render(request, 'registration/login.html')
+            error = 'Please provide both username and password'
+    
+    return render(request, 'registration/login.html', {'error': error})
+
+class CarListAPIView(generics.ListAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    
+class CarCommentsAPIView(generics.ListAPIView):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        car_id = self.kwargs['car_id']
+        return Comment.objects.filter(car_id=car_id)
+
+class UserCreateAPIView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]

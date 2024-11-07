@@ -3,11 +3,22 @@
 {% block content %}
 <div class="form-container">
     <h2>Login</h2>
-    <form method="post">
+    <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+        
         <button type="submit" class="form-btn">Login</button>
-    </form>
+    </form>    
+    
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    
     <p class="signup-link">
         Don't have an account? <a href="{% url 'register' %}">Sign up</a>
     </p>

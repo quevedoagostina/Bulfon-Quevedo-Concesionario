@@ -1,21 +1,23 @@
 # Bulfon-Quevedo-Concesionario
 
-ConcesionarioAuto es una app desarrollada con Django para gestionar una concesionaria de automóviles. Permite a los usuarios ver una lista de automóviles, detalles de cada auto, realizar comentarios, dejar reseñas y más. Los administradores del sitio pueden añadir, editar y eliminar vehículos y comentarios.
+**ConcesionarioAuto** es una aplicación desarrollada con Django para gestionar una concesionaria de automóviles. Permite a los usuarios ver una lista de automóviles, detalles de cada auto, realizar comentarios, dejar reseñas, y más. Los administradores pueden añadir, editar y eliminar vehículos y comentarios. Además, la aplicación incluye una API que permite interactuar con los datos de los automóviles y los usuarios.
 
 ## Características
 
 - **Lista de Automóviles**: Visualiza todos los automóviles disponibles en la concesionaria.
-![List](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img1.jpeg)
+  ![List](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img1.jpeg)
 - **Detalles del Automóvil**: Ver información detallada sobre cada auto, incluyendo marca, modelo, precio y año.
-![Car_Detail](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img2.jpeg)
+  ![Car_Detail](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img2.jpeg)
 - **Comentarios**: Los usuarios pueden dejar comentarios sobre los automóviles.
 - **Reseñas**: Los usuarios pueden dejar reseñas y calificaciones de los automóviles.
 - **Autenticación**: Sistema de registro e inicio de sesión para usuarios.
-![Login](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img3.jpeg)
+  ![Login](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img3.jpeg)
 - **Roles de Usuario**: Diferenciación entre usuarios normales y usuarios con rol de administrador (staff).
-![Register](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img4.jpeg)
+  ![Register](https://github.com/quevedoagostina/Bulfon-Quevedo-Concesionario/blob/main/images/img4.jpeg)
 - **Gestión de Automóviles**: Los administradores pueden agregar, editar y eliminar automóviles y comentarios.
 - **Carga de Imágenes**: Soporte para la carga de imágenes de los automóviles.
+- **API REST**: Acceso a la lista de automóviles, detalles de comentarios y creación de usuarios, especialmente para usuarios Staff.
+- **Traducciones**: Una página permite cambiar el idioma entre español e inglés.
 
 ## Requisitos Previos
 
@@ -27,8 +29,6 @@ Asegúrate de tener los siguientes requisitos instalados en tu sistema:
 - Un entorno virtual de Python (recomendado)
 
 ## Instalación
-
-Sigue estos pasos para configurar el proyecto en tu entorno local:
 
 ### 1. Clona el repositorio
 
@@ -100,36 +100,89 @@ Visita `http://127.0.0.1:8000/` en tu navegador para acceder a la aplicación.
 2. Navega por la lista de automóviles.
 3. Comenta y deja reseñas en los automóviles de tu elección.
 
+## API REST
+
+### Endpoints Disponibles
+
+1. **Listado de Automóviles**
+   - **URL**: `/api/cars/`
+   - **Método**: `GET`
+   - **Descripción**: Devuelve un listado de todos los automóviles, incluyendo información de marca y modelo.
+  
+2. **Comentarios de un Auto Específico**
+   - **URL**: `/api/cars/<car_id>/comments/`
+   - **Método**: `GET`
+   - **Descripción**: Devuelve el listado de comentarios asociados a un automóvil específico.
+  
+3. **Crear Usuario (solo Staff)**
+   - **URL**: `/api/users/create/`
+   - **Método**: `POST`
+   - **Descripción**: Permite a los usuarios con permisos de Staff crear nuevos usuarios.
+   - **Body**: 
+     ```json
+     {
+       "username": "new_client_user",
+       "email": "newclient@example.com",
+       "password": "securepassword123"
+     }
+     ```
+
+### Autenticación en la API
+
+Para crear usuarios mediante el endpoint `POST /api/users/create/`, debes autenticarte con un usuario que tenga permisos de Staff. Si estás usando autenticación basada en token o sesión, asegúrate de enviar las credenciales correspondientes en el cliente de API.
+
+## Internacionalización
+
+La aplicación permite cambiar el idioma a español en al menos una página seleccionada. Para probar las traducciones, asegúrate de tener los archivos `.po` y `.mo` generados en la carpeta `locale` (consulta la documentación para más detalles sobre cómo hacerlo).
+
 ## Estructura del Proyecto
+
 
 ```
 concesionarioauto/
-├── autos/
-│   ├── migrations/
-│   ├── static/
+├── autos/                     
+│   ├── migrations/            
+│   ├── static/                
 │   │   ├── css/
-│   │   │   └── styles.css
-│   ├── templates/
-│   │   ├── base.html
-│   │   ├── car_detail.html
-│   │   ├── car_form.html
-│   │   ├── car_list.html
-│   │   └── registration/
-│   │       ├── login.html
-│   │       └── register.html
+│   │   │   └── styles.css     
+│   ├── templates/             
+│   │   ├── base.html          
+│   │   ├── car_detail.html   
+│   │   ├── car_form.html     
+│   │   ├── car_list.html      
+│   │   └── registration/      
+│   │       ├── login.html     
+│   │       └── register.html  
+│   ├── __init__.py            
+│   ├── admin.py               
+│   ├── api_urls.py           
+│   ├── apps.py                
+│   ├── models.py              
+│   ├── serializers.py         
+│   ├── tests.py               
+│   ├── urls.py                
+│   └── views.py               
+├── concesionarioauto/         
 │   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   └── views.py
-├── concesionarioauto/
-│   ├── __init__.py
-│   ├── asgi.py
-│   ├── settings.py
-│   ├── urls.py
-│   ├── wsgi.py
-├── manage.py
-└── db.sqlite3
+│   ├── asgi.py                
+│   ├── settings.py            
+│   ├── urls.py                
+│   ├── wsgi.py                
+├── locale/                    
+│   └── es/LC_MESSAGES/
+│       ├── django.po          
+│       └── django.mo          
+├── images/                    
+│   ├── img1.jpeg
+│   ├── img2.jpeg
+│   ├── img3.jpeg
+│   └── img4.jpeg
+├── API_DOCUMENTATION.md       
+├── manage.py                  
+└── db.sqlite3                
 ```
+
+## Documentación de API
+
+Para más detalles sobre la API, consulta el archivo [API_DOCUMENTATION.md](API_DOCUMENTATION.md) para ver ejemplos de cada endpoint y los datos que recibe/devuelve.
+
